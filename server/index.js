@@ -1,18 +1,37 @@
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const cors = require('cors');
+const express = require("express");
+const http = require("http");
+const cors = require("cors");
+const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, { cors: { origin: '*' } });
+
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
 
 app.use(cors());
 
-io.on('connection', (socket) => {
-    console.log('New client connected');
-    socket.on('disconnect', () => console.log('Client disconnected'));
+let currentLight = "red"; // Initial light state
+
+// Change traffic light every 5 seconds
+setInterval(() => {
+    currentLight = currentLight === "red" ? "green" : "red";
+    io.emit("lightChange", currentLight); // Send update to all clients
+}, 5000);
+
+io.on("connection", (socket) => {
+    console.log("New client connected:", socket.id);
+    socket.emit("lightChange", currentLight); // Send initial state
+
+    socket.on("disconnect", () => {
+        console.log("Client disconnected:", socket.id);
+    });
 });
 
-const PORT = 5000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(5000, () => {
+    console.log("Server running on port 5000");
+});
