@@ -9,11 +9,10 @@
   }
   
   .vehicle {
-    position: absolute;
-    bottom: 50px; /* Adjust as needed */
-    left: 0;
-    width: 50px; /* Adjust vehicle size */
+    width: 50px;  /* Adjust size */
     height: 30px;
-    animation: moveVehicle 5s linear forwards; /* Duration should be dynamic */
+    background-color: red;
+    position: absolute;
+    bottom: 50px; /* Position relative to the road */
   }
   
