@@ -1,14 +1,30 @@
-import React from "react";
-import TrafficLight from "./components/TrafficLight";
-import "./App.css"; // Ensure this file exists inside src/
+import React, { useState, useEffect } from "react";
+import "../styles/Vehicle.css"; // Ensure correct path
 
-function App() {
-    return (
-        <div className="App">
-            <h1>Smart Traffic Simulation 🚦</h1>
-            <TrafficLight />
-        </div>
-    );
-}
+const Vehicle = ({ speed, trafficLightState }) => {
+  const [position, setPosition] = useState(0); // Starting position
 
-export default App;
+  useEffect(() => {
+    let interval;
+    
+    if (trafficLightState === "green") {
+      // Move the vehicle when light is green
+      interval = setInterval(() => {
+        setPosition((prevPosition) => prevPosition + speed);
+      }, 100);
+    }
+
+    return () => clearInterval(interval);
+  }, [trafficLightState, speed]); // Re-run effect when light or speed changes
+
+  return (
+    <div
+      className="vehicle"
+      style={{
+        transform: `translateX(${position}px)`, // Move vehicle
+      }}
+    ></div>
+  );
+};
+
+export default Vehicle;

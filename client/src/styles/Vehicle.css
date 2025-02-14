@@ -1,0 +1,19 @@
+
+  @keyframes moveVehicle {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100vw); /* Moves the car across the screen */
+    }
+  }
+  
+  .vehicle {
+    position: absolute;
+    bottom: 50px; /* Adjust as needed */
+    left: 0;
+    width: 50px; /* Adjust vehicle size */
+    height: 30px;
+    animation: moveVehicle 5s linear forwards; /* Duration should be dynamic */
+  }
+  
